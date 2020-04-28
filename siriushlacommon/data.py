@@ -6,17 +6,23 @@ from typing import List, Iterable, Tuple
 logger = logging.getLogger()
 TIMEFMT = "%d/%m/%Y %H:%M:%S"
 
-_DEVICES_URL = "http://10.0.38.42:26001/devices"
+# _DEVICES_URL = "http://10.0.38.42:26001/devices"
+_DEVICES_URL = "http://localhost:8080/devices"
+_TIMEOUT = 5
 
 
 def getMKS() -> List[dict]:
     """ MKS json from upstream @return dict following the data_model pattern """
-    return requests.get(_DEVICES_URL, verify=False, params={"type": "mks"}).json()
+    return requests.get(
+        _DEVICES_URL, verify=False, params={"type": "mks"}, timeout=_TIMEOUT
+    ).json()
 
 
 def getAgilent() -> List[dict]:
     """ Agilent json from upstream @return dict following the data_model pattern """
-    return requests.get(_DEVICES_URL, verify=False, params={"type": "agilent"}).json()
+    return requests.get(
+        _DEVICES_URL, verify=False, params={"type": "agilent"}, timeout=_TIMEOUT
+    ).json()
 
 
 def getDevicesDict(data: dict) -> Iterable[dict]:

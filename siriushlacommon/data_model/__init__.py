@@ -1,12 +1,8 @@
 from typing import List, Optional
 
-MKS_SENSOR_COLD_CATHODE = "ColdCathode"
-MKS_SENSOR_PIRANI = "Pirani"
-SENSOR_NOT_USED = "NotUsed"
-
 
 class ChannelInfo:
-    def __int__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
         self.sensor = kwargs.get("sensor", "")
         self.pressure_high = kwargs.get("pressure_high", None)
         self.pressure_hihi = kwargs.get("pressure_hihi", None)
@@ -14,15 +10,21 @@ class ChannelInfo:
 
 class Channel:
     def __init__(
-        self, name: str = "", prefix: str = "", num: int = 0, info: dict = {}, **kwargs
+        self,
+        name: str = "",
+        prefix: str = "",
+        num: int = 0,
+        info: dict = {},
+        enable: bool = True,
+        **kwargs
     ):
-        self.info = info
         self.name = name
         self.num = num
         self.prefix = prefix
+        self.enable = enable
         self.info: Optional[ChannelInfo] = None
-        if "info" in kwargs:
-            self.info = DeviceInfo(**kwargs["info"])
+        if info:
+            self.info = ChannelInfo(**info)
 
     def __repr__(self):
         return "{}(prefix={},name={})".format(
@@ -36,9 +38,6 @@ class DeviceInfo:
         self.rack = kwargs.get("rack", 0)
         self.sector = kwargs.get("sector", "")
         self.serial_id = kwargs.get("serial_id", -1)
-        self.info: Optional[DeviceInfo] = None
-        if "info" in kwargs:
-            self.info = DeviceInfo(**kwargs["info"])
 
     def __repr__(self):
         return "{}(config={})".format(self.__class__.__name__, self.config)
@@ -46,13 +45,22 @@ class DeviceInfo:
 
 class Device:
     def __init__(
-        self, prefix: str = "", info: dict = {}, channels: dict = {}, enable=True
+        self,
+        prefix: str = "",
+        info: dict = {},
+        channels: dict = {},
+        enable=True,
+        **kwargs
     ):
         self.enable = enable
         self.info = info
         self.prefix = prefix
         self.channels: List[Channel] = []
         self._generateChannels(channels)
+
+        self.info: Optional[DeviceInfo] = None
+        if "info" in kwargs:
+            self.info = DeviceInfo(**kwargs["info"])
 
     def getChannelByPrefix(self, prefix: str) -> Channel:
         for channel in self.channels:
