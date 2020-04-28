@@ -2,7 +2,7 @@ from typing import List, Optional
 
 MKS_SENSOR_COLD_CATHODE = "ColdCathode"
 MKS_SENSOR_PIRANI = "Pirani"
-SENSOR_COLD_CATHODE = "NotUsed"
+SENSOR_NOT_USED = "NotUsed"
 
 
 class ChannelInfo:

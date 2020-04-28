@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from setuptools import setup
+from setuptools import setup, find_namespace_packages
 from siriushlacommon import __version__, __author__
 
 requirements = None
@@ -11,7 +11,7 @@ setup(
     version=__version__,
     author=__author__,
     description="Commons for Sirius",
-    packages=["siriushlacommon"],
+    packages=find_namespace_packages(include=["siriushlacommon", "siriushlacommon.*"]),
     license="GNU GPLv3",
     include_package_data=True,
     install_requires=requirements,
