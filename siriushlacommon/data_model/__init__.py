@@ -59,8 +59,8 @@ class Device:
         self._generateChannels(channels)
 
         self.info: Optional[DeviceInfo] = None
-        if "info" in kwargs:
-            self.info = DeviceInfo(**kwargs["info"])
+        if info:
+            self.info = DeviceInfo(**info)
 
     def getChannelByPrefix(self, prefix: str) -> Channel:
         for channel in self.channels:
