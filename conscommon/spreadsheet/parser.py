@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-from enum import Enum
-from typing import Tuple, Iterable, Dict
+from typing import Dict
 
 import pandas
 import numpy
@@ -66,10 +65,15 @@ def normalize(sheet, ch_names: list) -> dict:
     logger.info("Loaded data from sheet with {} different IPs.".format(len(ips)))
     return ips
 
-def loadSheet(spreadsheet_xlsx_path: str, sheetName:SheetName) -> dict):
-    logger.info('Loading spreadsheet "{}" from url "{}"'.format( spreadsheet_xlsx_path, sheetName.value))
+
+def loadSheet(spreadsheet_xlsx_path: str, sheetName: SheetName) -> dict:
+    logger.info(
+        'Loading spreadsheet "{}" from url "{}"'.format(
+            spreadsheet_xlsx_path, sheetName.value
+        )
+    )
     sheet = pandas.read_excel(spreadsheet_xlsx_path, sheet_name=sheetName.value)
-    sheet = sheets[sheetName].replace(numpy.nan, "", regex=True)
+    sheet = sheet.replace(numpy.nan, "", regex=True)
 
     if sheetName == SheetName.AGILENT:
         return normalizeAgilent(sheet)
@@ -80,7 +84,7 @@ def loadSheet(spreadsheet_xlsx_path: str, sheetName:SheetName) -> dict):
 
 
 def loadSheets(spreadsheet_xlsx_path: str) -> Dict[SheetName, dict]:
-    data:Dict[SheetName, dict] = {}
+    data: Dict[SheetName, dict] = {}
     for sheetName in SheetName:
         data[SheetName] = loadSheet(spreadsheet_xlsx_path, sheetName)
     return data
