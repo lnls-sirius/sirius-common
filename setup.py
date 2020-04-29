@@ -7,7 +7,7 @@ with open("requirements.txt", "r") as _f:
     requirements = _f.readlines()
 
 setup(
-    name="siriushlacommon",
+    name="conscommon",
     version=__version__,
     author=__author__,
     description="CON Sirius commons",

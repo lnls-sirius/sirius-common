@@ -4,7 +4,7 @@ from typing import Tuple
 import pandas
 import numpy
 
-from siriushlacommon import get_logger
+from conscommon import get_logger
 
 logger = get_logger("Parser")
 

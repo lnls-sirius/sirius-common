@@ -3,29 +3,29 @@
 import unittest
 import os
 import requests
-import siriushlacommon.data
-import siriushlacommon.data_model
-import siriushlacommon.data_model.mks as mks
-import siriushlacommon.data_model.agilent as agilent
-import siriushlacommon.spreadsheet.parser as spreadsheet_parser
+import conscommon.data
+import conscommon.data_model
+import conscommon.data_model.mks as mks
+import conscommon.data_model.agilent as agilent
+import conscommon.spreadsheet.parser as spreadsheet_parser
 
 
 class TestDataModel(unittest.TestCase):
     def setUp(self):
-        self.data_mks = siriushlacommon.data.getMKS()
-        self.data_agilent = siriushlacommon.data.getAgilent()
+        self.data_mks = conscommon.data.getMKS()
+        self.data_agilent = conscommon.data.getAgilent()
 
     def test_mksDevice(self):
-        for device in siriushlacommon.data_model.getDevicesFromBeagles(
-            siriushlacommon.data_model.getBeaglesFromList(self.data_mks)
+        for device in conscommon.data_model.getDevicesFromBeagles(
+            conscommon.data_model.getBeaglesFromList(self.data_mks)
         ):
             self.assertIn(device.enable, [True, False])
             self.assertEqual(device.channels.__len__(), 6)
             self.assertNotEqual(device.info, None)
 
     def test_mksChannel(self):
-        for device in siriushlacommon.data_model.getDevicesFromBeagles(
-            siriushlacommon.data_model.getBeaglesFromList(self.data_mks)
+        for device in conscommon.data_model.getDevicesFromBeagles(
+            conscommon.data_model.getBeaglesFromList(self.data_mks)
         ):
             for channel in device.channels:
                 self.assertNotEqual(channel.info, None)
@@ -45,8 +45,8 @@ class TestDataModel(unittest.TestCase):
         spreadsheet_parser.loadSheets(spreadsheet_path)
 
     def test_agilentDevice(self):
-        for device in siriushlacommon.data_model.getDevicesFromBeagles(
-            siriushlacommon.data_model.getBeaglesFromList(self.data_agilent)
+        for device in conscommon.data_model.getDevicesFromBeagles(
+            conscommon.data_model.getBeaglesFromList(self.data_agilent)
         ):
             self.assertIn(device.enable, [True, False])
             self.assertEqual(device.channels.__len__(), 4)
