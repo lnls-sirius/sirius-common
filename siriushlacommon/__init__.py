@@ -1,19 +1,24 @@
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 __author__ = "Carneiro, Claudio F."
 
 import logging
+from typing import Optional, List
 
 
-def get_logger(name=__file__, level=logging.INFO):
+def get_logger(
+    name=__file__,
+    level: int = logging.INFO,
+    handlers: Optional[List[logging.Handler]] = None,
+) -> logging.Logger:
     """ Returns a logger object """
 
     logger = logging.getLogger(name)
 
-    if not len(logger.handlers):
-        logger.setLevel(logging.INFO)
+    if not len(logger.handlers) and not handlers:
+        formatter = logging.Formatter("%(name)s [%(levelname)s] %(message)s")
+        logger.setLevel(level)
         console = logging.StreamHandler()
         console.setLevel(logging.DEBUG)
-        formatter = logging.Formatter("%(name)s [%(levelname)s] %(message)s")
         console.setFormatter(formatter)
         logger.addHandler(console)
     return logger

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import unittest
+import os
 import requests
 import siriushlacommon.data
 import siriushlacommon.data_model
@@ -39,7 +40,9 @@ class TestDataModel(unittest.TestCase):
                 )
 
     def test_spreadsheetParser(self):
-        spreadsheet_parser.loadSheets("Redes e Beaglebones.xlsx")
+        spreadsheet_path = "./Redes e Beaglebones.xlsx"
+        self.assertIs(os.path.exists(spreadsheet_path), True)
+        spreadsheet_parser.loadSheets(spreadsheet_path)
 
     def test_agilentDevice(self):
         for device in siriushlacommon.data_model.getDevicesFromBeagles(
