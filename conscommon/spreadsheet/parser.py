@@ -74,7 +74,6 @@ def loadSheet(spreadsheet_xlsx_path: str, sheetName: SheetName) -> dict:
     )
     sheet = pandas.read_excel(spreadsheet_xlsx_path, sheet_name=sheetName.value)
     sheet = sheet.replace(numpy.nan, "", regex=True)
-
     if sheetName == SheetName.AGILENT:
         return normalizeAgilent(sheet)
     elif sheetName == SheetName.MKS:
@@ -86,5 +85,5 @@ def loadSheet(spreadsheet_xlsx_path: str, sheetName: SheetName) -> dict:
 def loadSheets(spreadsheet_xlsx_path: str) -> Dict[SheetName, dict]:
     data: Dict[SheetName, dict] = {}
     for sheetName in SheetName:
-        data[SheetName] = loadSheet(spreadsheet_xlsx_path, sheetName)
+        data[sheetName] = loadSheet(spreadsheet_xlsx_path, sheetName)
     return data
