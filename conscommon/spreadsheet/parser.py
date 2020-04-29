@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-from typing import Tuple
+
+from enum import Enum
+from typing import Tuple, Iterable, Dict
 
 import pandas
 import numpy
 
 from conscommon import get_logger
+from conscommon.spreadsheet import SheetName
 
 logger = get_logger("Parser")
 
@@ -63,19 +66,21 @@ def normalize(sheet, ch_names: list) -> dict:
     logger.info("Loaded data from sheet with {} different IPs.".format(len(ips)))
     return ips
 
+def loadSheet(spreadsheet_xlsx_path: str, sheetName:SheetName) -> dict):
+    logger.info('Loading spreadsheet "{}" from url "{}"'.format( spreadsheet_xlsx_path, sheetName.value))
+    sheet = pandas.read_excel(spreadsheet_xlsx_path, sheet_name=sheetName.value)
+    sheet = sheets[sheetName].replace(numpy.nan, "", regex=True)
 
-def loadSheets(spreadsheet_xlsx_path: str) -> Tuple[dict, dict]:
-    """ Tuple of dictionaries. (Agilent, MKS) """
+    if sheetName == SheetName.AGILENT:
+        return normalizeAgilent(sheet)
+    elif sheetName == SheetName.MKS:
+        return normalizeMKS(sheet)
+    else:
+        return {}
 
-    logger.info('Loading spreadsheet from url "{}".'.format(spreadsheet_xlsx_path))
-    sheets = pandas.read_excel(spreadsheet_xlsx_path, sheet_name=None,)
-    for sheetName in sheets:
-        if "PVs" in sheetName:
-            sheetNameUpper = sheetName.upper()
-            sheet = sheets[sheetName].replace(numpy.nan, "", regex=True)
 
-            if "AGILENT" in sheetNameUpper:
-                Agilent = normalizeAgilent(sheet)
-            elif "MKS" in sheetNameUpper:
-                MKS = normalizeMKS(sheet)
-    return Agilent, MKS
+def loadSheets(spreadsheet_xlsx_path: str) -> Dict[SheetName, dict]:
+    data:Dict[SheetName, dict] = {}
+    for sheetName in SheetName:
+        data[SheetName] = loadSheet(spreadsheet_xlsx_path, sheetName)
+    return data

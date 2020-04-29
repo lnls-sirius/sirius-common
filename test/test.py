@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
 
 import unittest
-import os
-import requests
 import conscommon.data
 import conscommon.data_model
 import conscommon.data_model.mks as mks
 import conscommon.data_model.agilent as agilent
-import conscommon.spreadsheet.parser as spreadsheet_parser
 
 
 class TestDataModel(unittest.TestCase):
@@ -38,11 +35,6 @@ class TestDataModel(unittest.TestCase):
                         mks.MKS_SENSOR_NOT_USED,
                     ],
                 )
-
-    def test_spreadsheetParser(self):
-        spreadsheet_path = "./Redes e Beaglebones.xlsx"
-        self.assertIs(os.path.exists(spreadsheet_path), True)
-        spreadsheet_parser.loadSheets(spreadsheet_path)
 
     def test_agilentDevice(self):
         for device in conscommon.data_model.getDevicesFromBeagles(
