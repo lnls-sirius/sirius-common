@@ -2,26 +2,43 @@
 import requests
 import logging
 from typing import List, Iterable, Tuple
+from conscommon import get_logger
 
-logger = logging.getLogger()
+logger = get_logger(level=logging.INFO)
 TIMEFMT = "%d/%m/%Y %H:%M:%S"
 
-# _DEVICES_URL = "http://10.0.38.42:26001/devices"
-_DEVICES_URL = "http://localhost:8080/devices"
+
+class RemoteAPI(Exception):
+    pass
+
+
+def checkCandidates() -> str:
+    for ip in ["10.0.38.42:26001", "localhost:8080"]:
+        url = "http://{}".format(ip)
+        try:
+            if requests.get(url + "/status", timeout=2).text == "Healthy!":
+                logger.info('Using remote url "{}"'.format(url))
+                return url + "/devices"
+        except:
+            logger.warning('Remote url "{}" unavailable'.format(url))
+            pass
+    raise RemoteAPI("No remote API available")
+
+
 _TIMEOUT = 5
 
 
 def getMKS() -> List[dict]:
     """ MKS json from upstream @return dict following the data_model pattern """
     return requests.get(
-        _DEVICES_URL, verify=False, params={"type": "mks"}, timeout=_TIMEOUT
+        checkCandidates(), verify=False, params={"type": "mks"}, timeout=_TIMEOUT
     ).json()
 
 
 def getAgilent() -> List[dict]:
     """ Agilent json from upstream @return dict following the data_model pattern """
     return requests.get(
-        _DEVICES_URL, verify=False, params={"type": "agilent"}, timeout=_TIMEOUT
+        checkCandidates(), verify=False, params={"type": "agilent"}, timeout=_TIMEOUT
     ).json()
 
 
