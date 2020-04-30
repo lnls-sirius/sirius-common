@@ -1,5 +1,4 @@
 from enum import Enum, unique
-from typing import Optional
 
 
 @unique
@@ -24,7 +23,8 @@ class SheetName(Enum):
     def from_key(cls, key: str):
         if not key:
             return None
-        for member in cls.__members__:
+
+        for member in cls:
             if member.name == key.upper():
                 return member
 

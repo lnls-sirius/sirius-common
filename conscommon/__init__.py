@@ -7,7 +7,7 @@ from typing import Optional, List
 
 def get_logger(
     name=__file__,
-    level: int = logging.INFO,
+    level: int = logging.WARNING,
     handlers: Optional[List[logging.Handler]] = None,
 ) -> logging.Logger:
     """ Returns a logger object """
@@ -18,7 +18,6 @@ def get_logger(
         formatter = logging.Formatter("%(name)s [%(levelname)s] %(message)s")
         logger.setLevel(level)
         console = logging.StreamHandler()
-        console.setLevel(logging.DEBUG)
         console.setFormatter(formatter)
         logger.addHandler(console)
     return logger
