@@ -19,25 +19,40 @@ def normalizeMKS(sheet) -> dict:
     return normalize(sheet, ["A1", "A2", "B1", "B2", "C1", "C2"])
 
 
-def normalize(sheet, ch_names: list) -> dict:
+def normalizeMBTemp(sheet) -> dict:
+    # ENABLE	IP	Rack	ADDR	Dev	Location
+    return normalize(
+        sheet,
+        ["CH1", "CH2", "CH3", "CH4", "CH5", "CH6", "CH7", "CH8"],
+        device_col="Dev",
+    )
+
+
+def normalize(
+    sheet,
+    ch_names: list,
+    device_col: str = "Dispositivo",
+    ip_col="IP",
+    enable_col="ENABLE",
+) -> dict:
     """ Create a dictionary with the beaglebone IP as keys.  Aka: {ip:[devices ...] ... ipn:[devicesn ... ]} """
     ips = {}
     try:
         for n, row in sheet.iterrows():
-            ip = row["IP"]
+            ip = row.get(ip_col)
             if ip not in ips:
                 ips[ip] = []
             ip_devices = ips[ip]
             data = {}
 
             ip_devices.append(data)
-            data["enable"] = row["ENABLE"] if type(row["ENABLE"]) is bool else False
-            data["prefix"] = row["Dispositivo"]
+            data["enable"] = row.get(enable_col, False)
+            data["prefix"] = row.get(device_col)
 
             info = {}
-            info["sector"] = row["Setor"]
-            info["serial_id"] = row["RS485 ID"]
-            info["rack"] = row["Rack"]
+            info["sector"] = row.get("Setor", "")
+            info["serial_id"] = row.get("RS485 ID")
+            info["rack"] = row.get("Rack")
             data["info"] = info
 
             channels = {}
@@ -49,10 +64,10 @@ def normalize(sheet, ch_names: list) -> dict:
                 channel["enable"] = row[ch_name] != "" or row[ch_name] is None
 
                 info = {}
-                info["pressure_hi"] = row["HI " + ch_name]
-                info["pressure_hihi"] = row["HIHI " + ch_name]
+                info["pressure_hi"] = row.get("HI " + ch_name)
+                info["pressure_hihi"] = row.get("HIHI " + ch_name)
                 if "Sensor " + ch_name in row:
-                    info["sensor"] = row["Sensor " + ch_name]
+                    info["sensor"] = row.get("Sensor " + ch_name)
                 channel["info"] = info
 
                 channels[ch_name] = channel
@@ -74,10 +89,16 @@ def loadSheet(spreadsheet_xlsx_path: str, sheetName: SheetName) -> dict:
     )
     sheet = pandas.read_excel(spreadsheet_xlsx_path, sheet_name=sheetName.value)
     sheet = sheet.replace(numpy.nan, "", regex=True)
+
     if sheetName == SheetName.AGILENT:
         return normalizeAgilent(sheet)
+
     elif sheetName == SheetName.MKS:
         return normalizeMKS(sheet)
+
+    elif sheetName == SheetName.MBTEMP:
+        return normalizeMBTemp(sheet)
+
     else:
         return {}
 
