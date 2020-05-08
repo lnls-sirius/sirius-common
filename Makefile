@@ -7,10 +7,10 @@ clean :
 	find . -name '__pycache__'  -exec rm -rd --force {} +
 
 install: install-files clean-git
-	sudo pip install -r requirements.txt .
+	sudo ./setup.py install --single-version-externally-managed --compile --force --record /dev/null
 
 develop: clean
-	sudo pip install -e .
+	sudo ./setup.py develop
 
 clean-git:
 	sudo git clean -fdX
