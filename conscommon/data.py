@@ -6,6 +6,7 @@ from conscommon import get_logger
 
 logger = get_logger(level=logging.INFO)
 TIMEFMT = "%d/%m/%Y %H:%M:%S"
+API_CANDIDATES = ["10.0.38.42:26001", "localhost:8080"]
 
 
 class RemoteAPI(Exception):
@@ -13,7 +14,7 @@ class RemoteAPI(Exception):
 
 
 def checkCandidates() -> str:
-    for ip in ["10.0.38.42:26001", "localhost:8080"]:
+    for ip in API_CANDIDATES:
         url = "http://{}".format(ip)
         try:
             if requests.get(url + "/status", timeout=2).text == "Healthy!":
@@ -26,6 +27,13 @@ def checkCandidates() -> str:
 
 
 _TIMEOUT = 5
+
+
+def getMBTemp() -> List[dict]:
+    """ MBTemp json from upstream @return dict following the data_model pattern """
+    return requests.get(
+        checkCandidates(), verify=False, params={"type": "mbtemp"}, timeout=_TIMEOUT
+    ).json()
 
 
 def getMKS() -> List[dict]:

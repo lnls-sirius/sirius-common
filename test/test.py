@@ -4,13 +4,14 @@ import unittest
 import conscommon.data
 import conscommon.data_model
 import conscommon.data_model.mks as mks
-import conscommon.data_model.agilent as agilent
 
 
 class TestDataModel(unittest.TestCase):
     def setUp(self):
+        conscommon.data.API_CANDIDATES = ["localhost:8080"]
         self.data_mks = conscommon.data.getMKS()
         self.data_agilent = conscommon.data.getAgilent()
+        self.data_mbtemp = conscommon.data.getMBTemp()
 
     def test_mksDevice(self):
         for device in conscommon.data_model.getDevicesFromBeagles(
@@ -35,6 +36,13 @@ class TestDataModel(unittest.TestCase):
                         mks.MKS_SENSOR_NOT_USED,
                     ],
                 )
+
+    def test_mbtempDevice(self):
+        for device in conscommon.data_model.getDevicesFromBeagles(
+            conscommon.data_model.getBeaglesFromList(self.data_mbtemp)
+        ):
+            self.assertIn(device.enable, [True, False])
+            self.assertEqual(device.channels.__len__(), 8)
 
     def test_agilentDevice(self):
         for device in conscommon.data_model.getDevicesFromBeagles(
