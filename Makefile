@@ -1,16 +1,18 @@
-.PHONY: clean install
+.PHONY: clean install uninstall
+PACKAGE_NAME=conscommon
 
-clean :
+clean-git:
+	sudo git clean -fdX
+
+clean: clean-git
 	find . -name '*.pyc' -exec rm --force {} +
 	find . -name '*.pyo' -exec rm --force {} +
 	find . -name '*~'    -exec rm --force {} +
 	find . -name '__pycache__'  -exec rm -rd --force {} +
 
-install: install-files clean-git
-	sudo ./setup.py install --single-version-externally-managed --compile --force --record /dev/null
+uninstall:
+	sudo pip uninstall $(PACKAGE_NAME) -y
 
-develop: clean
-	sudo ./setup.py develop
+install: clean-git
+	sudo pip install .
 
-clean-git:
-	sudo git clean -fdX
