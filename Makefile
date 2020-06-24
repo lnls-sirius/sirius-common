@@ -11,8 +11,8 @@ clean: clean-git
 	find . -name '__pycache__'  -exec rm -rd --force {} +
 
 uninstall:
-	sudo pip uninstall $(PACKAGE_NAME) -y
+	sudo /usr/bin/env python3 -m pip uninstall $(PACKAGE_NAME) -y
 
 install: clean-git
-	sudo pip install .
+	sudo /usr/bin/env python3 -m pip install .
 
