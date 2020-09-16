@@ -8,7 +8,9 @@ import conscommon.spreadsheet.parser as spreadsheet_parser
 
 class TestDataModel(unittest.TestCase):
     def test_spreadsheetParser(self):
-        spreadsheet_path = "./Redes e Beaglebones.xlsx"
+        spreadsheet_path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "Redes e Beaglebones.xlsx"
+        )
         self.assertIs(os.path.exists(spreadsheet_path), True)
         data = spreadsheet_parser.loadSheets(spreadsheet_path)
 
