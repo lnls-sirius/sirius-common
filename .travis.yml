@@ -1,3 +1,5 @@
+language: python
+dist: buster
 deploy:
   provider: pypi
   username: __token__
