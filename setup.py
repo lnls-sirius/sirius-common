@@ -16,7 +16,6 @@ setup(
         "Topic :: Scientific/Engineering",
         "Operating System :: OS Independent",
     ],
-    description="CON Sirius commons",
     description="Commons for Sirius applications",
     download_url="https://github.com/lnls-sirius/cons-common",
     include_package_data=True,
