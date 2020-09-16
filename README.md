@@ -1,6 +1,8 @@
 Common module for Sirius applications
 =====================================
 
+Common features for Sirius scripts.
+
 Data
 ----
 Web API interface.
