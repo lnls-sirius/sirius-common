@@ -1,6 +1,5 @@
 language: python
 python:
-    - "3.6"
     - "3.8"
 arch: amd64          # optional, this is default, routes to a full VM
 os: linux            # optional, this is default
@@ -12,12 +11,12 @@ services:
 before_install:
   - cd test
   - cat docker-compose.yml
-  - docker-compose -d up
+  - docker-compose -f ./docker-compose.yml up -d
   - cd ..
 
 script:
-  - test/test.py
-  - test/test_spreadsheet.py
+  - python test/test.py
+  - python test/test_spreadsheet.py
 
 deploy:
   provider: pypi
