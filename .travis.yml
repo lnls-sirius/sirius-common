@@ -11,7 +11,7 @@ services:
 before_install:
   - cd test
   - cat docker-compose.yml
-  - docker-compose -f ./docker-compose.yml up -d
+  - docker-compose up -d
   - cd ..
 
 script:

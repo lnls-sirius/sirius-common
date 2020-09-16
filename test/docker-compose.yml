@@ -2,7 +2,6 @@ version: "3.7"
 services:
     app:
         image: "lnlscon/utility:v1.8"
-        build: "."
         volumes:
             - "./Redes e Beaglebones.xlsx:/opt/spreadsheet/Redes e Beaglebones.xlsx:ro"
         ports:
