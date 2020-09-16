@@ -9,10 +9,8 @@ services:
   - docker
 
 before_install:
-  - cd test
-  - cat docker-compose.yml
-  - docker-compose up -d
-  - cd ..
+  - docker pull lnlscon/utility:v1.8
+  - docker run -d -p 8080:80 --mount type=bind,source="$(pwd)/test/Redes e Beaglebones.xlsx",destination="/opt/spreadsheet/Redes e Beaglebones.xlsx" lnlscon/utility:v1.8
 
 script:
   - sed -i -e "s/__version__ =.*/__version__ = \"$(git describe --tags)\"/" conscommon/__init__.py
