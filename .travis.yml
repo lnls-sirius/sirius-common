@@ -15,7 +15,7 @@ before_install:
   - cd ..
 
 script:
-  - sed -e "s/__version__ =.*/__version__ = \"$(git describe --tags)\"/" conscommon/__init__.py
+  - sed -i -e "s/__version__ =.*/__version__ = \"$(git describe --tags)\"/" conscommon/__init__.py
   - cat conscommon/__init__.py | grep 'version\|author'
   - python -m pip install pandas xlrd
   - python -m pip install .
