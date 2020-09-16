@@ -32,5 +32,7 @@ deploy:
     branch: master
 
 after_deploy:
+  - sleep 30
+  - python -m pip search conscommon
   - python -m pip install conscommon==$(git describe --tags) --force
 
