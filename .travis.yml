@@ -1,5 +1,7 @@
 language: python
-dist: buster
+arch: amd64          # optional, this is default, routes to a full VM
+os: linux            # optional, this is default
+dist: focal          # Ubuntu Focal 20.04
 deploy:
   provider: pypi
   username: __token__
