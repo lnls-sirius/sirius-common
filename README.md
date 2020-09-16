@@ -1,7 +1,10 @@
 Common module for Sirius applications
 =====================================
 
-Common features for Sirius scripts.
+Common features for Sirius scripts. [![Build Status](https://api.travis-ci.org/lnls-sirius/cons-common.svg)](https://travis-ci.org/lnls-sirius/cons-common)
+
+Available at **PyPi** https://pypi.org/project/conscommon/
+
 
 Data
 ----
