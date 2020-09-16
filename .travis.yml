@@ -30,3 +30,7 @@ deploy:
   on:
     tags: true
     branch: master
+
+after_deploy:
+  - python -m pip install conscommon==$(git describe --tags) --force
+

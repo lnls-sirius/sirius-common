@@ -2,10 +2,17 @@
 from setuptools import setup, find_namespace_packages
 from conscommon import __version__, __author__
 
-with open("README.md", "r") as _f:
+import pkg_resources
+
+
+def get_abs_path(relative):
+    return pkg_resources.resource_filename(__name__, relative)
+
+
+with open(get_abs_path("README.md"), "r") as _f:
     long_description = _f.read().strip()
 
-with open("requirements.txt", "r") as _f:
+with open(get_abs_path("requirements.txt"), "r") as _f:
     requirements = _f.readlines()
 
 setup(
