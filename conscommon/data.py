@@ -6,7 +6,7 @@ from conscommon import get_logger
 
 logger = get_logger(level=logging.INFO)
 TIMEFMT = "%d/%m/%Y %H:%M:%S"
-API_CANDIDATES = ["10.0.38.42:26001", "localhost:8080"]
+API_CANDIDATES = ["10.0.38.42:26001", "10.0.38.46:26001", "10.0.38.59:26001", "localhost:8080"]
 
 
 class RemoteAPI(Exception):
