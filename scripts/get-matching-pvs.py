@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import argparse
-from src import getMatchingPVs
+from siriuscommon.archiver import getMatchingPVs
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("getMatchingPVs Request")

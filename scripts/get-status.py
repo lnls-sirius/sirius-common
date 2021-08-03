@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import argparse
-from src import getPVStatus
+from siriuscommon.archiver import getPVStatus
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("getPVStatus Request")

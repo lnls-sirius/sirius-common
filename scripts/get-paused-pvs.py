@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from src import getPausedPVsReport
+from siriuscommon.archiver import getPausedPVsReport
 
 if __name__ == "__main__":
     getPausedPVsReport()

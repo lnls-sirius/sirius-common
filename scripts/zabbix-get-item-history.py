@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import argparse
 from datetime import datetime
-from src.zabbix import ZabbixClient
+from siriuscommon.zabbix import ZabbixClient
 
 
 if __name__ == "__main__":

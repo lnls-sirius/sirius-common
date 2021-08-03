@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import argparse
-from src.zabbix import ZabbixClient
+from siriuscommon.zabbix import ZabbixClient
 
 
 if __name__ == "__main__":
