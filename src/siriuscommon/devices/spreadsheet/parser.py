@@ -35,7 +35,7 @@ def normalize(
     ip_col="IP",
     enable_col="ENABLE",
 ) -> dict:
-    """ Create a dictionary with the beaglebone IP as keys.  Aka: {ip:[devices ...] ... ipn:[devicesn ... ]} """
+    """Create a dictionary with the beaglebone IP as keys.  Aka: {ip:[devices ...] ... ipn:[devicesn ... ]}"""
     ips = {}
     try:
         for n, row in sheet.iterrows():

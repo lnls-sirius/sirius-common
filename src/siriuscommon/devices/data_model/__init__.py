@@ -1,4 +1,4 @@
-from typing import List, Optional
+import typing as _typing
 
 
 class ChannelInfo:
@@ -22,7 +22,7 @@ class Channel:
         self.num = num
         self.prefix = prefix
         self.enable = enable
-        self.info: Optional[ChannelInfo] = None
+        self.info: _typing.Optional[ChannelInfo] = None
         if info:
             self.info = ChannelInfo(**info)
 
@@ -55,10 +55,10 @@ class Device:
         self.enable = enable
         self.info = info
         self.prefix = prefix
-        self.channels: List[Channel] = []
+        self.channels: _typing.List[Channel] = []
         self._generateChannels(channels)
 
-        self.info: Optional[DeviceInfo] = None
+        self.info: _typing.Optional[DeviceInfo] = None
         if info:
             self.info = DeviceInfo(**info)
 
@@ -83,7 +83,7 @@ class Device:
 class Beaglebone:
     def __init__(self, ip: str = "", devices: list = []):
         self.ip = ip
-        self.devices: List[Device] = []
+        self.devices: _typing.List[Device] = []
         self._generateDevices(devices)
 
     def _generateDevices(self, data):
@@ -99,35 +99,28 @@ class Beaglebone:
         )
 
 
-def getDevicesFromBeagles(beagles: List[Beaglebone],) -> List[Device]:
-    """ Generate devices from beagle """
-    devices: List[Device] = []
+def getDevicesFromBeagles(
+    beagles: _typing.List[Beaglebone],
+) -> _typing.List[Device]:
+    """Generate devices from beagle"""
+    devices: _typing.List[Device] = []
     for beagle in beagles:
         for device in beagle.devices:
             devices.append(device)
     return devices
 
 
-# def iterateBeagleDevices(
-#    beagles: List[Beaglebone.__class__],
-# ) -> Iterable[Tuple[Beaglebone, Device]]:
-#    """ Generate devices from beagle """
-#    for beagle in beagles:
-#        for device in beagle.devices:
-#            yield beagle, device
-
-
-def getDevicesFromList(data: list) -> List[Device]:
-    """ Load datamodel objects from a list of dictionaries """
-    devices: List[Device] = []
+def getDevicesFromList(data: list) -> _typing.List[Device]:
+    """Load datamodel objects from a list of dictionaries"""
+    devices: _typing.List[Device] = []
     for d in data:
         devices.append(Device(**d))
     return devices
 
 
-def getBeaglesFromList(data: dict) -> List[Beaglebone]:
-    """ Load datamodel objects from dictionary """
-    beagles: List[Beaglebone] = []
+def getBeaglesFromList(data: dict) -> _typing.List[Beaglebone]:
+    """Load datamodel objects from dictionary"""
+    beagles: _typing.List[Beaglebone] = []
     for k, v in data.items():
         beagle = Beaglebone(ip=k, devices=v)
         beagles.append(beagle)
