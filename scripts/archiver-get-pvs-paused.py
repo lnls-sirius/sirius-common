@@ -2,4 +2,6 @@
 from siriuscommon.archiver import getPausedPVsReport
 
 if __name__ == "__main__":
-    getPausedPVsReport()
+    pvs = getPausedPVsReport()
+    for pv in pvs:
+        print(pv.pv_name)
