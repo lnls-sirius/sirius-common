@@ -30,7 +30,7 @@ def get_server_data(
         appl_items = client.get_items_from_host(srv.appl_metrics)
 
         for item in srv_items:
-            if item.name == "CPI idle time":
+            if item.name == "CPU idle time":
                 srv.cpu_idle_time = client.get_item_history(
                     item.itemid, time_from, time_till
                 )
