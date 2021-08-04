@@ -4,34 +4,10 @@ import requests as _requests
 from datetime import datetime as _datetime
 from pyzabbix import ZabbixAPI as _ZabbixAPI
 
-from . import get_logger
+from .. import get_logger
+from .types import ZabbixHistory, ZabbixTrend, _make_zabbix_history, _make_zabbix_trend
 
 _logger = get_logger(__name__)
-
-
-class ZabbixTrend(object):
-    def __init__(self, data: dict) -> None:
-        super().__init__()
-        self.data = data
-        self.timestamp = _datetime.fromtimestamp(int(data["clock"]))
-        self.value_avg = data["value_avg"]
-        self.value_min = data["value_min"]
-        self.value_max = data["value_max"]
-        self.num = data["num"]
-
-    def __str__(self) -> str:
-        return f"{self.data}, {self.timestamp}"
-
-
-class ZabbixHistory(object):
-    def __init__(self, kwargs: dict) -> None:
-        self.itemid = kwargs["itemid"]
-        self.value = kwargs["value"]
-        self.timestamp = _datetime.fromtimestamp(int(kwargs["clock"]))
-        self.data = kwargs
-
-    def __str__(self) -> str:
-        return f"{self.data}, {self.timestamp}"
 
 
 class ZabbixItem(object):
@@ -117,7 +93,7 @@ class ZabbixClient:
             payload["time_till"] = int(time_till.timestamp())
 
         response = self._api.do_request("trend.get", payload)
-        return [ZabbixTrend(data) for data in response["result"]]
+        return [_make_zabbix_trend(data) for data in response["result"]]
 
     def get_item_history(
         self,
@@ -142,4 +118,4 @@ class ZabbixClient:
             payload["time_till"] = int(time_till.timestamp())
 
         response = self._api.do_request("history.get", payload)
-        return [ZabbixHistory(data) for data in response["result"]]
+        return [_make_zabbix_history(data) for data in response["result"]]
