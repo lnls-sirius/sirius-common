@@ -1,9 +1,9 @@
 import logging as _logging
 import typing as _typing
 
-__version__ = "0.1.0"
+__version__ = "0.0.1"
 __author__ = "Carneiro, Claudio F."
-__date__ = ""
+__date__ = "Thu, 05 Aug 2021 09:38:36 -0300"
 
 
 def get_logger(

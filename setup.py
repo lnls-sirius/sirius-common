@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-from setuptools import setup, find_packages
 import pkg_resources
+from setuptools import find_packages, setup
 
-from src.siriuscommon import __version__, __author__
+from src.siriuscommon import __author__, __version__
 
 
 def get_abs_path(relative):
@@ -49,7 +49,7 @@ setup(
     license="GNU GPLv3",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    name="sirisucommon",
+    name="siriuscommon",
     packages=find_packages(
         where="src",
         include=[
