@@ -14,10 +14,13 @@ class Channel:
         name: str = "",
         prefix: str = "",
         num: int = 0,
-        info: dict = {},
+        info: dict = None,
         enable: bool = True,
         **kwargs
     ):
+        if not info:
+            info = {}
+
         self.name = name
         self.num = num
         self.prefix = prefix
@@ -47,11 +50,16 @@ class Device:
     def __init__(
         self,
         prefix: str = "",
-        info: dict = {},
-        channels: dict = {},
+        info: dict = None,
+        channels: dict = None,
         enable=True,
         **kwargs
     ):
+        if not info:
+            info = {}
+        if not channels:
+            channels = {}
+
         self.enable = enable
         self.info = info
         self.prefix = prefix
@@ -81,7 +89,11 @@ class Device:
 
 
 class Beaglebone:
-    def __init__(self, ip: str = "", devices: list = []):
+    def __init__(self, ip: str = "", devices: list = None):
+
+        if not devices:
+            devices = []
+
         self.ip = ip
         self.devices: _typing.List[Device] = []
         self._generateDevices(devices)
