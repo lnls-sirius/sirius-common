@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import argparse
-from siriuscommon.zabbix import ZabbixClient
 
+from siriuscommon.zabbix import ZabbixClient
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("List zabbix items from host")
