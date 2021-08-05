@@ -1,7 +1,8 @@
 #!/usr/bin/env python
-import requests as _requests
 import logging as _logging
 import typing as _typing
+
+import requests as _requests
 
 from .. import get_logger
 
@@ -27,7 +28,7 @@ def checkCandidates() -> str:
             if _requests.get(url + "/status", timeout=2).text == "Healthy!":
                 _logger.info('Using remote url "{}"'.format(url))
                 return url + "/devices"
-        except:
+        except Exception:
             _logger.warning('Remote url "{}" unavailable'.format(url))
             pass
     raise RemoteAPI("No remote API available")
@@ -56,14 +57,14 @@ def getAgilent() -> _typing.List[dict]:
 
 def getDevicesDict(data: dict) -> _typing.Iterable[dict]:
     """Device generator from json"""
-    for ip, beagle in data.items():
+    for _ip, beagle in data.items():
         for device in beagle:
             yield device
 
 
 def getChannelsDict(data: dict) -> _typing.Iterable[_typing.Tuple[str, str, dict]]:
     """Tuple of (device prefix, channel_name, channel_data) generator from json"""
-    for ip, beagle in data.items():
+    for _ip, beagle in data.items():
         for device in beagle:
             for channel_name, channel_data in device["channels"].items():
                 yield device["prefix"], channel_name, channel_data

@@ -2,9 +2,8 @@
 
 from typing import Dict
 
-import pandas
 import numpy
-
+import pandas
 from conscommon import get_logger
 from conscommon.spreadsheet import SheetName
 
@@ -38,7 +37,7 @@ def normalize(
     """Create a dictionary with the beaglebone IP as keys.  Aka: {ip:[devices ...] ... ipn:[devicesn ... ]}"""
     ips = {}
     try:
-        for n, row in sheet.iterrows():
+        for _n, row in sheet.iterrows():
             ip = row.get(ip_col)
             if ip not in ips:
                 ips[ip] = []

@@ -1,7 +1,7 @@
-import logging as _logging
 import typing as _typing
-import requests as _requests
 from datetime import datetime as _datetime
+
+import requests as _requests
 from pyzabbix import ZabbixAPI as _ZabbixAPI
 
 from .. import get_logger
