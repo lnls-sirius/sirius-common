@@ -5,6 +5,7 @@ import requests as _requests
 from .types import (
     ArchiverDisconnectedPV,
     ArchiverPausedPV,
+    ArchiverStatusPV,
     _make_archiver_disconnected_pv,
     _make_archiver_paused_pv,
     _make_archiver_status_pv,
@@ -27,12 +28,17 @@ class ArchiverClient:
     ) -> None:
 
         self._mgmt_url = f"{base_url}/mgmt/bpl"
+        self._retrieval_url = f"{base_url}/retrieval/bpl"
         self._authenticated = False
 
         self._session: _requests.Session = _requests.Session()
 
         if username and password:
             self.login(username, password)
+
+    @property
+    def authenticated(self):
+        return self._authenticated
 
     def login(self, username: str, password: str):
         data = {"username": username, "password": password}
@@ -45,6 +51,15 @@ class ArchiverClient:
         )
         if not self.authenticated:
             raise ArchiverLoginException(f"failed to authenticat user {username}")
+
+    def logout(self):
+        raise NotImplementedError()
+
+    def resume_pv(self, pv_name: str) -> bool:
+        raise NotImplementedError()
+
+    def delete_pv(self, pv_name: str) -> bool:
+        raise NotImplementedError()
 
     def pause_pv(self, pv_name: str):
         if not self.authenticated:
@@ -62,49 +77,58 @@ class ArchiverClient:
             return True
         return False
 
-    @property
-    def authenticated(self):
-        return self._authenticated
+    def get_currently_disconnected_pvs(self) -> _typing.List[ArchiverDisconnectedPV]:
+        return [
+            _make_archiver_disconnected_pv(**pv)
+            for pv in _requests.get(
+                f"{self._mgmt_url}/getCurrentlyDisconnectedPVs", verify=False
+            ).json()
+        ]
+
+    def get_paused_pvs_report(self) -> _typing.List[ArchiverPausedPV]:
+        return [
+            _make_archiver_paused_pv(**pv)
+            for pv in _requests.get(
+                f"{self._mgmt_url}/getPausedPVsReport", verify=False
+            ).json()
+        ]
+
+    def get_matching_pvs(self, search: str, limit: int = 500) -> _typing.List[str]:
+        return [
+            pv
+            for pv in _requests.get(
+                f"{self._retrieval_url}/getMatchingPVs",
+                params={"pv": search, "limit": limit},
+                verify=False,
+            ).json()
+        ]
+
+    def get_pv_status(self, search: str, reporttype: str = "short") -> ArchiverStatusPV:
+        return [
+            _make_archiver_status_pv(**pv)
+            for pv in _requests.get(
+                f"{self._mgmt_url}/getPVStatus",
+                params={"pv": search, "reporttype": reporttype},
+                verify=False,
+            ).json()
+        ]
 
 
 def getCurrentlyDisconnectedPVs(
     base_url: str = _default_base_url,
 ) -> _typing.List[ArchiverDisconnectedPV]:
-    return [
-        _make_archiver_disconnected_pv(**pv)
-        for pv in _requests.get(
-            f"{base_url}/mgmt/bpl/getCurrentlyDisconnectedPVs", verify=False
-        ).json()
-    ]
+    return ArchiverClient(base_url=base_url).get_currently_disconnected_pvs()
 
 
 def getPausedPVsReport(
     base_url: str = _default_base_url,
 ) -> _typing.List[ArchiverPausedPV]:
-    return [
-        _make_archiver_paused_pv(**pv)
-        for pv in _requests.get(
-            f"{base_url}/mgmt/bpl/getPausedPVsReport", verify=False
-        ).json()
-    ]
+    return ArchiverClient(base_url=base_url).get_paused_pvs_report()
 
 
 def getMatchingPVs(search: str, base_url: str = _default_base_url) -> _typing.List[str]:
-    return [
-        pv
-        for pv in _requests.get(
-            f"{base_url}/retrieval/bpl/getMatchingPVs?pv={search}&limit=500",
-            verify=False,
-        ).json()
-    ]
+    return ArchiverClient(base_url=base_url).get_matching_pvs(search=search)
 
 
 def getPVStatus(search: str, base_url: str = _default_base_url):
-    return [
-        _make_archiver_status_pv(**pv)
-        for pv in _requests.get(
-            f"{base_url}/mgmt/bpl/getPVStatus",
-            params={"pv": search, "reporttype": "short"},
-            verify=False,
-        ).json()
-    ]
+    return ArchiverClient(base_url=base_url).get_pv_status(search=search)
