@@ -6,6 +6,7 @@ Common module for Sirius applications
 [![PyPI version fury.io](https://badge.fury.io/py/siriuscommon.svg)](https://pypi.python.org/pypi/siriuscommon/)
 
 Common features for Sirius scripts.
+
 Available at **PyPi** https://pypi.org/project/siriuscommon/
 
 
