@@ -58,6 +58,7 @@ setup(
     ),
     scripts=[
         "scripts/archiver-get-pv-status.py",
+        "scripts/archiver-get-pvs-by-dropped-events-type-change.py",
         "scripts/archiver-get-pvs-disconnected.py",
         "scripts/archiver-get-pvs-matching.py",
         "scripts/archiver-get-pvs-paused.py",

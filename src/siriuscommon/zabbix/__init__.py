@@ -10,6 +10,11 @@ from .types import ZabbixHistory, ZabbixTrend, _make_zabbix_history, _make_zabbi
 _logger = get_logger(__name__)
 
 
+class ZabbixItemNotFound(Exception):
+    def __init__(self, *args: object) -> None:
+        super().__init__(*args)
+
+
 class ZabbixItem(object):
     def __init__(
         self,
@@ -71,7 +76,7 @@ class ZabbixClient:
     ) -> _typing.List[ZabbixTrend]:
         item = self.get_item(itemid=itemid)
         if not item:
-            raise Exception("Item not found")
+            raise ZabbixItemNotFound("Item not found")
 
         payload: _typing.Dict[str, _typing.Union[str, int, _typing.List]] = {
             "itemids": itemid,
@@ -103,7 +108,7 @@ class ZabbixClient:
     ) -> _typing.List[ZabbixHistory]:
         item = self.get_item(itemid=itemid)
         if not item:
-            raise Exception("Item not found")
+            raise ZabbixItemNotFound("Item not found")
 
         payload: _typing.Dict[str, _typing.Union[str, int]] = {
             "itemids": itemid,
