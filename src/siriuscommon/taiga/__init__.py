@@ -1,8 +1,7 @@
-from .client import TaigaClient, _taiga_default_url
-from .. import get_logger, PasswordPromptAction
-
 import argparse as _argparse
 
+from .. import PasswordPromptAction, get_logger
+from .client import TaigaClient, _taiga_default_url
 
 logger = get_logger("Taiga")
 
