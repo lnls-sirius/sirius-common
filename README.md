@@ -12,5 +12,29 @@ Available at **PyPi** https://pypi.org/project/siriuscommon/
 
 library for:
 * EPICS Archiver Appliance
+* Fluig (WIP)
+* Taiga
 * Zabbix
 * utility-api
+
+EPICS Archiver Appliance
+------------------------
+
+Fluig
+-----
+
+Taiga
+-----
+The followwing scripts are installed by this module:
+
+| script                   | description                                                    |
+| ------------------------ | -------------------------------------------------------------- |
+| taiga-initialize-project | Initialise a Taiga project, creating custom attributes         |
+| taiga-export-xlsx        | Export a Taiga project into a spreadsheet using the ENG format |
+
+
+Zabbix
+------
+
+utility-api
+-----------
