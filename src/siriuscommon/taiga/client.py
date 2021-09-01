@@ -216,6 +216,11 @@ class TaigaClient:
             type="number",
         )
         project.add_user_story_attribute(
+            "Variação de pontuação",
+            description="Variação de pontuação da atividade durante o sprint",
+            type="number",
+        )
+        project.add_user_story_attribute(
             "Projeto",
             description="Projetos válidos da ENG",
             type="dropdown",
@@ -317,7 +322,7 @@ class TaigaClient:
             "Nome da Equipe",
             "Descrição",
             "Dependências / Condições para a atividade",
-            # "Variação de pontuação",
+            "Variação de pontuação",
             "Nova?",
             "Membros Atribuidos",
             "Sprint",
