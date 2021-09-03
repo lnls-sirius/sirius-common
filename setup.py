@@ -30,11 +30,11 @@ long_description = get_long_description()
 with open(get_abs_path("requirements.txt"), "r") as _f:
     requirements = _f.readlines()
 
-entry_style = "console_scripts" if platform.system() == "Windows" else "gui_scripts"
+# entry_style = "console_scripts" if platform.system() == "Windows" else "gui_scripts"
 setup(
     author=__author__,
     entry_points={
-        entry_style: [
+        "console_scripts": [
             "taiga-initialize-project=siriuscommon.taiga:taiga_initialize_project",
             "taiga-export-xlsx=siriuscommon.taiga:taiga_export_xlsx",
         ]
