@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-import platform
-
 import pkg_resources
 from setuptools import find_packages, setup
 
@@ -30,7 +28,6 @@ long_description = get_long_description()
 with open(get_abs_path("requirements.txt"), "r") as _f:
     requirements = _f.readlines()
 
-# entry_style = "console_scripts" if platform.system() == "Windows" else "gui_scripts"
 setup(
     author=__author__,
     entry_points={
