@@ -205,6 +205,12 @@ class TaigaClient:
 
     def _add_user_story_attributes(self, project: _taiga.models.Project):
         project.add_user_story_attribute(
+            "Projeto",
+            description="Projetos válidos da ENG",
+            type="dropdown",
+            extra=_eng_projetos,
+        )
+        project.add_user_story_attribute(
             "Macro-atividade",
             description="Macro-atividade da user history",
             type="dropdown",
@@ -219,12 +225,6 @@ class TaigaClient:
             "Variação de pontuação",
             description="Variação de pontuação da atividade durante o sprint",
             type="number",
-        )
-        project.add_user_story_attribute(
-            "Projeto",
-            description="Projetos válidos da ENG",
-            type="dropdown",
-            extra=_eng_projetos,
         )
         project.add_user_story_attribute(
             "Nova?",

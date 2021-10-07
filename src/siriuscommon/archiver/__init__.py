@@ -1,5 +1,5 @@
+import abc as _abc
 import typing as _typing
-from argparse import ArgumentError
 
 import requests as _requests
 
@@ -23,7 +23,31 @@ class ArchiverLoginException(Exception):
         super().__init__(*args)
 
 
-class ArchiverClient:
+class ArchiverMGMTClient(_abc.ABC):
+    @_abc.abstractmethod
+    def get_all_pvs(self, pv_name: str, regex: str, limit: int):
+        """
+        /getAllPVs - Get all the PVs in the cluster. Note this call can return millions of PVs
+        pv An optional argument that can contain a GLOB wildcard. We will return PVs that match this GLOB. For example, if pv=KLYS*, the server will return all PVs that start with the string KLYS. If both pv and regex are unspecified, we match against all PVs.
+        regex An optional argument that can contain a Java regex wildcard. We will return PVs that match this regex. For example, if pv=KLYS*, the server will return all PVs that start with the string KLYS.
+        limit An optional argument that specifies the number of matched PV's that are retured. If unspecified, we return 500 PV names. To get all the PV names, (potentially in the millions), set limit to –1.
+        """
+
+    @_abc.abstractclassmethod
+    def pause_pv(self, pv_name: str):
+        """
+        /pauseArchivingPV - Pause archiving the specified PV.
+        This also tears down the CA channel for this PV.
+
+        pv : The name of the pv.
+
+        You can also pass in GLOB wildcards here and multiple PVs as a comma separated list.
+        If you have more PVs that can fit in a GET, send the pv's as
+        a CSV pv=pv1,pv2,pv3 as the body of a POST.
+        """
+
+
+class ArchiverClient(ArchiverMGMTClient):
     def __init__(
         self,
         base_url: str = _default_base_url,
@@ -40,6 +64,9 @@ class ArchiverClient:
         self._session.verify = False
         if username and password:
             self.login(username, password)
+
+    def get_all_pvs(self, pv_name: str, regex: str, limit: int):
+        raise NotImplementedError()
 
     @property
     def authenticated(self):
@@ -87,7 +114,7 @@ class ArchiverClient:
             raise ValueError()
 
         response = self._session.get(f"{self._mgmt_url}/pauseArchivingPV?pv={pv_name}")
-        success = (
+        success = bool(
             response.status_code == 200
             and (f"Successfully paused the archiving of PV {pv_name}")
             or (f"PV {pv_name} is already paused") in response.text
@@ -115,17 +142,17 @@ class ArchiverClient:
         samplingmethod: The new sampling method For now, this is one of SCAN or MONITOR.
         """
         if sampling_method < 0.01:
-            raise ArgumentError(f"'sampling_period' {sampling_period} invalue range")
+            raise AttributeError(f"'sampling_period' {sampling_period} invalue range")
         if (
             type(sampling_method) != str
             and type(sampling_method) != ArchiverSamplingMethod
         ):
-            raise ArgumentError(f"'sampling_method' {sampling_method} invalid type")
+            raise AttributeError(f"'sampling_method' {sampling_method} invalid type")
         if (
             sampling_method != ArchiverSamplingMethod.SCAN
             and sampling_method != ArchiverSamplingMethod.MONITOR
         ):
-            raise ArgumentError(f"'sampling_method' {sampling_method} invalid option")
+            raise AttributeError(f"'sampling_method' {sampling_method} invalid option")
 
         # sampling_method_value = sampling_method.value
 
@@ -136,12 +163,10 @@ class ArchiverClient:
         raise NotImplementedError()
 
     def get_currently_disconnected_pvs(self) -> _typing.List[ArchiverDisconnectedPV]:
-        return [
-            _make_archiver_disconnected_pv(**pv)
-            for pv in self._session.get(
-                f"{self._mgmt_url}/getCurrentlyDisconnectedPVs", verify=False
-            ).json()
-        ]
+        pvs_json = self._session.get(
+            f"{self._mgmt_url}/getCurrentlyDisconnectedPVs", verify=False
+        ).json()
+        return [_make_archiver_disconnected_pv(**pv) for pv in pvs_json]
 
     def get_paused_pvs_report(self) -> _typing.List[ArchiverPausedPV]:
         return [
