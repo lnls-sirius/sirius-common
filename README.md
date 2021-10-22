@@ -6,17 +6,35 @@ Common module for Sirius applications
 [![PyPI version fury.io](https://badge.fury.io/py/siriuscommon.svg)](https://pypi.python.org/pypi/siriuscommon/)
 
 Common features for Sirius scripts.
+
 Available at **PyPi** https://pypi.org/project/siriuscommon/
 
 
-Data
-----
-Web API interface.
+library for:
+* EPICS Archiver Appliance
+* Fluig (WIP)
+* Taiga
+* Zabbix
+* utility-api
 
-Data Model
-----------
-Data model.
+EPICS Archiver Appliance
+------------------------
 
-Spreadsheet
+Fluig
+-----
+
+Taiga
+-----
+The followwing scripts are installed by this module:
+
+| script                   | description                                                    |
+| ------------------------ | -------------------------------------------------------------- |
+| taiga-initialize-project | Initialise a Taiga project, creating custom attributes         |
+| taiga-export-xlsx        | Export a Taiga project into a spreadsheet using the ENG format |
+
+
+Zabbix
+------
+
+utility-api
 -----------
-XLSX parser, this module should be avoided in favor of the WEB API, usefull in applications that will deal directly with the spreadsheet. Requires `pandas` and `xlrd`.

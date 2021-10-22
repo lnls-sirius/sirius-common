@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-from setuptools import setup, find_packages
 import pkg_resources
+from setuptools import find_packages, setup
 
-from src.siriuscommon import __version__, __author__
+from src.siriuscommon import __author__, __version__
 
 
 def get_abs_path(relative):
@@ -30,6 +30,12 @@ with open(get_abs_path("requirements.txt"), "r") as _f:
 
 setup(
     author=__author__,
+    entry_points={
+        "console_scripts": [
+            "taiga-initialize-project=siriuscommon.taiga:taiga_initialize_project",
+            "taiga-export-xlsx=siriuscommon.taiga:taiga_export_xlsx",
+        ]
+    },
     classifiers=[
         "Intended Audience :: Science/Research",
         "Operating System :: OS Independent",
@@ -49,7 +55,7 @@ setup(
     license="GNU GPLv3",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    name="sirisucommon",
+    name="siriuscommon",
     packages=find_packages(
         where="src",
         include=[
@@ -57,14 +63,14 @@ setup(
         ],
     ),
     scripts=[
-        "scripts/get-archiver-fofb-data.py",
-        "scripts/get-disconnected-pvs.py",
-        "scripts/get-matching-pvs.py",
-        "scripts/get-paused-pvs.py",
-        "scripts/get-status.py",
+        "scripts/archiver-get-pv-status.py",
+        "scripts/archiver-get-pvs-by-dropped-events-type-change.py",
+        "scripts/archiver-get-pvs-disconnected.py",
+        "scripts/archiver-get-pvs-matching.py",
+        "scripts/archiver-get-pvs-paused.py",
         "scripts/zabbix-get-item-history.py",
-        "scripts/zabbix-get-items-from-host.py",
         "scripts/zabbix-get-item-trend.py",
+        "scripts/zabbix-get-items-from-host.py",
     ],
     package_dir={"": "src"},
     python_requires=">=3.6",

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import unittest
+
 import conscommon.data
 import conscommon.data_model
 import conscommon.data_model.mks as mks

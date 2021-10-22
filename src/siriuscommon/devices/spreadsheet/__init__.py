@@ -2,7 +2,7 @@ from enum import Enum, unique
 
 
 @unique
-class SheetName(Enum):
+class SheetName(str, Enum):
     AGILENT = "PVs Agilent 4UHV"
     COUNTING_PRU = "PVs Counting PRU"
     MBTEMP = "PVs MBTemp"

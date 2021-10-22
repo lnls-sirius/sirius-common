@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
-import unittest
 import os
-from conscommon.spreadsheet import SheetName
+import unittest
+
 import conscommon.spreadsheet.parser as spreadsheet_parser
+from conscommon.spreadsheet import SheetName
 
 
 class TestDataModel(unittest.TestCase):
