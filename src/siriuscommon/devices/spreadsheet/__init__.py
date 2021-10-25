@@ -10,7 +10,9 @@ class SheetName(str, Enum):
     SPIXCONV = "PVs SPIxCONV"
 
     @classmethod
-    def has_key(cls, key: str):
+    def has_sheet(cls, key: str):
+        if key and key.__class__ == cls:
+            return True
         if not key or key.__class__ != str:
             return False
         return key.upper() in cls.__members__.keys()
