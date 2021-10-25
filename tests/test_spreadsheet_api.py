@@ -2,17 +2,17 @@
 
 import unittest
 
-import siriuscommon.devices.data
+import siriuscommon.devices
 import siriuscommon.devices.data_model
 import siriuscommon.devices.data_model.mks as mks
 
 
 class TestDataModel(unittest.TestCase):
     def setUp(self):
-        siriuscommon.devices.data.API_CANDIDATES = ["localhost:8080"]
-        self.data_mks = siriuscommon.devices.data.getMKS()
-        self.data_agilent = siriuscommon.devices.data.getAgilent()
-        self.data_mbtemp = siriuscommon.devices.data.getMBTemp()
+        siriuscommon.devices.API_CANDIDATES = ["localhost:8080"]
+        self.data_mks = siriuscommon.devices.getMKS()
+        self.data_agilent = siriuscommon.devices.getAgilent()
+        self.data_mbtemp = siriuscommon.devices.getMBTemp()
 
     def test_mksDevice(self):
         for device in siriuscommon.devices.data_model.getDevicesFromBeagles(
